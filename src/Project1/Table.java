@@ -6,6 +6,7 @@ package Project1;
  */
 
 import java.io.*;
+import java.nio.file.Paths;
 import java.util.*;
 import java.util.function.*;
 import java.util.stream.*;
@@ -25,7 +26,7 @@ public class Table
 {
     /** Relative path for storage directory
      */
-    private static final String DIR = "store" + File.separator;
+    private static final String DIR = Paths.get("").toAbsolutePath().toString()+"\\src\\store" + File.separator;
 
     /** Filename extension for database files
      */
