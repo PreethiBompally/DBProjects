@@ -303,8 +303,14 @@ public class Table
         out.println("RA> " + name + ".union (" + table2.name + ")");
         if (!compatible(table2)) return null;
 
-        List<Comparable[]> rows = new ArrayList<>();
-        // TO BE IMPLEMENTED
+        List<Comparable[]> rows = new ArrayList<>(tuples);
+
+        // Add tuples from table2 that are not already present in the union
+        for (Comparable[] tuple : table2.tuples) {
+            if (!rows.contains(tuple)) {
+                rows.add(tuple);
+            }
+        }
 
         return new Table(name + count++, attribute, domain, key, rows);
     } // union
