@@ -25,7 +25,7 @@ public class Table
 {
     /** Relative path for storage directory
      */
-    private static final String DIR = "C:\\Users\\bompa\\eclipse-workspace\\DatabaseManagement\\src\\store" + File.separator;
+    private static final String DIR = "store" + File.separator;
 
     /** Filename extension for database files
      */
