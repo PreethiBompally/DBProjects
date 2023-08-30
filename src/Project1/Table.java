@@ -521,7 +521,13 @@ public class Table
                 }
                 if (match) {
                     // Combine the tuples and eliminate duplicate columns
-                    Comparable[] combinedTuple = concat(extract(tuple1, attribute), extract(tuple2, table2.attribute));
+                    Comparable[] combinedTuple = new Comparable[attribute.length + table2.attribute.length];
+                    for (int i = 0; i < attribute.length; i++) {
+                        combinedTuple[i] = tuple1[i];
+                    }
+                    for (int i = 0; i < table2.attribute.length; i++) {
+                        combinedTuple[attribute.length + i] = tuple2[i];
+                    }
                     rows.add(combinedTuple);
                 }
             }
