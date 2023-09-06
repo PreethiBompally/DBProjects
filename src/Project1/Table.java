@@ -278,10 +278,10 @@ public class Table
 
         try 
         {
-        	Comparable[] individualTuple = index.get(keyVal);
-        	if((individualTuple) != null)
+        	Comparable[] eachTuple = index.get(keyVal);
+        	if((eachTuple) != null)
         	{
-        		rows.add(individualTuple);
+        		rows.add(eachTuple);
         	}
         }
         catch(Exception e)
@@ -289,8 +289,8 @@ public class Table
         	System.out.println("Exception While Select operation : " + e.getMessage());
         }
         return new Table (name + count++, attribute, domain, key, rows);
-    } // select
-
+    } // select  
+    
     /************************************************************************************
      * Union this table and table2.  Check that the two tables are compatible.
      *
