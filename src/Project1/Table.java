@@ -376,6 +376,12 @@ public class Table
         		}
         	}
         }
+        
+        for(int i =0;i<table2.attribute.length;i++) {
+        	if(Arrays.asList(attribute).contains(table2.attribute[i])) {
+        		table2.attribute[i] = table2.attribute[i] + "2";
+        	}
+        }
 
         return new Table (name + count++, concat (attribute, table2.attribute),
                                           concat (domain, table2.domain), key, rows);
@@ -442,7 +448,12 @@ public class Table
         		}
         	}
         }
-
+        for(int i =0;i<table2.attribute.length;i++) {
+        	if(Arrays.asList(attribute).contains(table2.attribute[i])) {
+        		table2.attribute[i] = table2.attribute[i] + "2";
+        	}
+        }
+        
         return new Table (name + count++, concat (attribute, table2.attribute),
                                           concat (domain, table2.domain), key, rows);
     } // join
@@ -506,7 +517,7 @@ public class Table
                 }
             }
         }
-        
+        String[] table2_attr = new String[table2.attribute.length - commonAttributes.size()];
         // Extract tuples from each table where common attributes match
         for (var tuple1 : tuples) {
             for (var tuple2 : table2.tuples) {
@@ -521,19 +532,24 @@ public class Table
                 }
                 if (match) {
                     // Combine the tuples and eliminate duplicate columns
-                    Comparable[] combinedTuple = new Comparable[attribute.length + table2.attribute.length];
+                    Comparable[] combinedTuple = new Comparable[attribute.length + table2.attribute.length - commonAttributes.size()];
                     for (int i = 0; i < attribute.length; i++) {
                         combinedTuple[i] = tuple1[i];
                     }
+                    int j = 0;
                     for (int i = 0; i < table2.attribute.length; i++) {
-                        combinedTuple[attribute.length + i] = tuple2[i];
+                    	if(!Arrays.asList(attribute).contains(table2.attribute[i])) {
+                    		combinedTuple[attribute.length + i] = tuple2[i];
+                    		table2_attr[j] = table2.attribute[i];
+                    		j++;
+                    	}
                     }
                     rows.add(combinedTuple);
                 }
             }
         }
-
-        return new Table(name + count++, concat (attribute, table2.attribute),
+        
+        return new Table(name + count++, concat (attribute, table2_attr),
                 concat (domain, table2.domain), key, rows);
     }// join
 
