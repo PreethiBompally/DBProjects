@@ -26,7 +26,7 @@ public class Table
 {
     /** Relative path for storage directory
      */
-    private static final String DIR = Paths.get("").toAbsolutePath().toString()+"\\src\\store" + File.separator;
+    private static final String DIR = Paths.get("").toAbsolutePath().toString()+"\\store" + File.separator;
 
     /** Filename extension for database files
      */
