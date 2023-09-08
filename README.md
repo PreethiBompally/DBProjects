@@ -19,9 +19,9 @@ The "src/project1" folder has 3 files
 2. MovieDB.java
 3. Table.java
 
-- we have created a folder "store"  which saves each tables' data.This folder has to be in the same directory as "src" folder.
+- we have created a folder "store"  which saves each tables' data.This folder has to be in the same directory as "src".
 
-- We have generated documentaion using Java Docs. The documentaion folder is in the same directory as "src" folder.
+- We have generated documentaion using Java Docs. The documentaion folder is in the same directory as "src".
 
 Execution:
 
