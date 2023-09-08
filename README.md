@@ -14,14 +14,14 @@ The following relational operations are implemented in the "Table.java"
 - Minus
 - Join (equi join, theta join, natural join)
 
-The "project1" folder has 3 files 
+The "src/project1" folder has 3 files 
 1. KeyType.java
 2. MovieDB.java
 3. Table.java
 
-- we have created a folder "store"  which saves each tables' data.This folder has to be in the same directory as "project1" folder.
+- we have created a folder "store"  which saves each tables' data.This folder has to be in the same directory as "src" folder.
 
-- We have generated documentaion using Java Docs. The documentaion folder is in the same directory as "project1" folder.
+- We have generated documentaion using Java Docs. The documentaion folder is in the same directory as "src" folder.
 
 Execution:
 
