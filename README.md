@@ -23,6 +23,8 @@ The "src/project1" folder has 3 files
 
 - We have generated documentaion using Java Docs. The documentaion folder is in the same directory as "src".
 
+- Also handled duplicate rows in all the necessary functions.
+
 Execution:
 
 1. Run "MovieDB.java" which has main method. This creates, inserts and saves tables' data.
