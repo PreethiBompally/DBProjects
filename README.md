@@ -1,5 +1,12 @@
 # DB_Project-1
 
+Team members : 
+1. Sai mukesh Chukka (811176420)
+2. Preethi Bompally(811015950)
+3. Sai pranavi reddy Patlolla(811183131)
+4. Amily Chowdhury(811639282)
+5. Jahnavi priya Bommareddy(811997108)
+
 The following relational operations are implemented in the "Table.java"
 - Project
 - Select
@@ -7,12 +14,14 @@ The following relational operations are implemented in the "Table.java"
 - Minus
 - Join (equi join, theta join, natural join)
 
-The project #1 folder has 3 files 
+The "project1" folder has 3 files 
 1. KeyType.java
 2. MovieDB.java
 3. Table.java
 
-- we have created a folder "store"  which saves all table data.This folder has to be in the same directory as project #1 folder.
+- we have created a folder "store"  which saves each tables' data.This folder has to be in the same directory as "project1" folder.
+
+- We have generated documentaion using Java Docs. The documentaion folder is in the same directory as "project1" folder.
 
 Execution:
 
