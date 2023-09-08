@@ -540,13 +540,14 @@ public class Table
                 if (match) {
                     // Combine the tuples and eliminate duplicate columns
                     Comparable[] combinedTuple = new Comparable[attribute.length + table2.attribute.length - commonAttributes.size()];
+                    
                     for (int i = 0; i < attribute.length; i++) {
                         combinedTuple[i] = tuple1[i];
                     }
                     int j = 0;
                     for (int i = 0; i < table2.attribute.length; i++) {
                     	if(!Arrays.asList(attribute).contains(table2.attribute[i])) {
-                    		combinedTuple[attribute.length + i] = tuple2[i];
+                    		combinedTuple[attribute.length + j] = tuple2[i];
                     		table2_attr[j] = table2.attribute[i];
                     		j++;
                     	}
