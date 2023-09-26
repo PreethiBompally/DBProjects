@@ -7,6 +7,8 @@ package Project2;
 
 import static java.lang.System.out;
 
+import java.util.Arrays;
+
 /*****************************************************************************************
  * The MovieDB class makes a Movie Database.  It serves as a template for making other
  * databases.  See "Database Systems: The Complete Book", second edition, page 26 for more
@@ -148,7 +150,7 @@ class MovieDB
         out.println ();
         var t_i_join = movie.i_join ("studioName", "name", studio);
         t_i_join.print ();
-
+        
     } // main
 
 } // MovieDB class
