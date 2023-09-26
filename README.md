@@ -22,7 +22,7 @@ The following functions are implemented in "FileList.java"
 -> add
 -> get
 
-(also implemted pack and unpack functions)
+(Also implemented pack and unpack functions)
 
 The "src/project2" folder has 5 files
 
@@ -32,10 +32,10 @@ The "src/project2" folder has 5 files
 4.LinHashMap.java
 5.FileList.java
  
--- we have created a folder "store" which saves each tables' data.This folder has to be in the same directory as "src".
--- We have generated documentaion using Java Docs. The documentaion folder is in the same directory as "src".
+-- we have created a folder "store" which saves each tables' data. This folder has to be in the same directory as "src".
+-- We have generated documents using Java Docs. The documentation folder is in the same directory as "src".
 
 Execution:
 
-1.Run "MovieDB.java" which has main method. This creates, inserts and saves tables' data.
-2.This main method calls all the relational operations(select,i_join) that are implemented in "Table.java".
+1.Run "MovieDB.java" which has main method. This creates, inserts, and saves tables' data.
+2.This main method calls all the relational operations(select, i_join) that are implemented in "Table.java".
