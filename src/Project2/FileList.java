@@ -109,7 +109,6 @@ public class FileList extends AbstractList <Comparable []> implements List <Comp
 			file.seek(file.length());
 			file.write(record);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
           

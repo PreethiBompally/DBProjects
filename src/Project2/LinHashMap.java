@@ -128,7 +128,6 @@ public class LinHashMap <K, V>
     {
         var enSet = new HashSet <Map.Entry <K, V>> ();
 
-        //  T O   B E   I M P L E M E N T E D
         for (int i = 0; i < hTable.size(); i++) {
             Bucket bucket = hTable.get(i);
             while (bucket != null) {
