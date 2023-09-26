@@ -126,33 +126,31 @@ public class FileList extends AbstractList <Comparable []> implements List <Comp
     public byte[] pack(Comparable [] tuple){
     	byte[] result = null;
     	
-    	ByteArrayOutputStream boutput = new ByteArrayOutputStream();
-    	DataOutputStream doutput = new DataOutputStream(boutput);
+    	ByteArrayOutputStream bop = new ByteArrayOutputStream();
+    	DataOutputStream dop = new DataOutputStream(bop);
     	
     	for(int i = 0; i<tuple.length;i++){
-    		boutput.reset(); //clean the boutput
+    		bop.reset();
     		byte[] buf = null;
     		try {
-    			//System.out.println(tuple[i].getClass().getName());
+    			
 	    		if(tuple[i] instanceof Long ){
-	    			doutput.writeLong((long) tuple[i]);
+	    			dop.writeLong((long) tuple[i]);
 	        	}else if(tuple[i] instanceof Integer ){
-	        		//System.out.println("Integer");
-	        		doutput.writeInt((int) tuple[i]);
-	        		//System.out.println(buf.length);
+	        		
+	        		dop.writeInt((int) tuple[i]);
 	        	}else if(tuple[i] instanceof Short ){
-	        		doutput.writeShort((Short)tuple[i]);
+	        		dop.writeShort((Short)tuple[i]);
 	        	}else if(tuple[i] instanceof Byte ){
-	        		doutput.writeByte((Byte)tuple[i]);
+	        		dop.writeByte((Byte)tuple[i]);
 	        	}else if(tuple[i] instanceof Double  || tuple[i] instanceof Float ){
-	        		doutput.writeDouble((Double)tuple[i]);
+	        		dop.writeDouble((Double)tuple[i]);
 	        	}else if(tuple[i] instanceof Character){
-	        		doutput.writeChar((Character)tuple[i]);
-	        	}else if(tuple[i] instanceof String){
-					//System.out.println(tuple[i]);					
-	        		doutput.writeUTF((String) tuple[i]);
+	        		dop.writeChar((Character)tuple[i]);
+	        	}else if(tuple[i] instanceof String){			
+	        		dop.writeUTF((String) tuple[i]);
 	        	}
-	    		buf = boutput.toByteArray();
+	    		buf = bop.toByteArray();
         		attributeSize[nRecords][i] = buf.length;
     		} catch (IOException e) {
 				e.printStackTrace();
@@ -180,20 +178,12 @@ public class FileList extends AbstractList <Comparable []> implements List <Comp
         return byte_3;  
     }  
 
-    /*
-    * @Description: recover byte[] -> Comparable []
-    * @param  i  
-    * @return Comparable[]    
-    * @throws
-     */
     public  Comparable [] unpack(byte[] result,int index){
     	
-    	//System.out.println("===========");
-    	Comparable [] tupleTemp  = new Comparable[domain.length];
+    	Comparable [] tup  = new Comparable[domain.length];
     	byte[] buf  = null;
-    	ByteArrayInputStream bintput  = null;
-    	DataInputStream dintput ;
-    	//int i = dintput.readInt();
+    	ByteArrayInputStream bip  = null;
+    	DataInputStream dip ;
     	int resultIndex = 0;
     	for(int i = 0;i<domain.length;i++){
     		
@@ -201,44 +191,40 @@ public class FileList extends AbstractList <Comparable []> implements List <Comp
         		buf = new byte[attributeSize[index][i]];
         		System.arraycopy(result, resultIndex , buf, 0, buf.length);
         		resultIndex = resultIndex +  buf.length;
-        		bintput = new ByteArrayInputStream(buf);
-        		dintput = new DataInputStream(bintput);
-        				
-        		
+        		bip = new ByteArrayInputStream(buf);
+        		dip = new DataInputStream(bip);
+
         		if(domain[i].equals(Long.class) ){
-        			long temp = dintput.readLong();
-        			tupleTemp[i] = temp;
+        			long temp = dip.readLong();
+        			tup[i] = temp;
             	}else if(domain[i].equals(Integer.class) ){
-            		int temp = dintput.readInt();
-            		tupleTemp[i] = temp;
+            		int temp = dip.readInt();
+            		tup[i] = temp;
             	}else if(domain[i].equals(Short.class) ){
-            		short temp = dintput.readShort();
-            		tupleTemp[i] = temp;
+            		short temp = dip.readShort();
+            		tup[i] = temp;
             	}else if(domain[i].equals(Byte.class) ){
-            		byte temp = dintput.readByte();
-            		tupleTemp[i] = temp;
+            		byte temp = dip.readByte();
+            		tup[i] = temp;
             	}else if(domain[i].equals(Float.class)){
-            		//System.out.println("Float");
-            		double temp = dintput.readDouble();
-            		//System.out.println(temp);
-            		tupleTemp[i] = temp;
+            		double temp = dip.readDouble();
+            		tup[i] = temp;
             	}else if(domain[i].equals(Double.class)){
-            		double temp = dintput.readDouble();
-            		tupleTemp[i] = temp;
+            		double temp = dip.readDouble();
+            		tup[i] = temp;
             	}else if(domain[i].equals(Character.class)){
-            		char temp = dintput.readChar();
-            		tupleTemp[i] = temp;
+            		char temp = dip.readChar();
+            		tup[i] = temp;
             	}else if(domain[i].equals(String.class)){
-            		//System.out.println("String");
-            		String temp = dintput.readUTF();
-            		tupleTemp[i] = temp;
+            		String temp = dip.readUTF();
+            		tup[i] = temp;
             	}
         			
     		}catch(IOException e) {
 				e.printStackTrace();
 			}	
     	}
-    	return tupleTemp;
+    	return tup;
     }
 
     /***************************************************************************
@@ -249,19 +235,14 @@ public class FileList extends AbstractList <Comparable []> implements List <Comp
      */
     public Comparable [] get (int index)
     {
-    	//0.check the index
     	if(index + 1 > nRecords){
     		System.out.println("Out of Index");
     		return null;
     	}
-    	
-    	//1.compute the this Record Size
     	int thisRecordSize  = 0 ;
     	for(int i=0;i<domain.length;i++){
     		thisRecordSize = thisRecordSize + attributeSize[index][i];
     	}
-    	
-    	//2.cumpute the startIndex
     	int startIndex = 0;
     	for(int i = 0; i<index;i++){
     		for(int j=0;j<domain.length;j++){
@@ -279,7 +260,7 @@ public class FileList extends AbstractList <Comparable []> implements List <Comp
         
         Comparable [] tuple = unpack(record,index); 
 
-        return tuple;   // FIX: table.unpack (record);
+        return tuple;
     } // get
 
     public RandomAccessFile getFile() {
