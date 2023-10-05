@@ -10,7 +10,7 @@ package Project2;
 import java.io.*;
 import java.lang.reflect.Array;
 import static java.lang.System.out;
-import java.util.*;
+import java.util.*;                                                                                                       
 
 /************************************************************************************
  * This class provides hash maps that use the Linear Hashing algorithm.
@@ -43,13 +43,13 @@ public class LinHashMap <K, V>
     /********************************************************************************
      * This inner class defines buckets that are stored in the hash table.
      */
-    private class Bucket
+    private class Bucket implements Serializable 
     {
         int    nKeys;
         K []   key;
         V []   value;
         Bucket next;
-
+ 
         @SuppressWarnings("unchecked")
         Bucket ()
         {
@@ -127,7 +127,7 @@ public class LinHashMap <K, V>
     public Set <Map.Entry <K, V>> entrySet ()
     {
         var enSet = new HashSet <Map.Entry <K, V>> ();
-
+        
         for (int i = 0; i < hTable.size(); i++) {
             Bucket bucket = hTable.get(i);
             while (bucket != null) {
@@ -161,7 +161,7 @@ public class LinHashMap <K, V>
      */
     public V put (K key, V value)
     {
-        var i    = h (key);                                                  // hash to i-th bucket chain
+        var i = Math.abs(h(key));                                                // hash to i-th bucket chain
         var bh   = hTable.get (i);                                           // start with home bucket
         var oldV = find (key, bh, false);                                    // find old value associated with key
         out.println ("LinearHashMap.put: key = " + key + ", h() = " + i + ", value = " + value);
@@ -216,40 +216,40 @@ public class LinHashMap <K, V>
     /********************************************************************************
      * Split bucket chain 'isplit' by creating a new bucket chain at the end of the
      * hash table and redistributing the keys according to the high resolution hash
-     * function 'h2'.  Increment 'isplit'.  If current split phase is complete,
+     * function 'h2'. Increment 'isplit'. If current split phase is complete,
      * reset 'isplit' to zero, and update the hash functions.
      */
-    private void split ()
+    private void split() 
     {
-    	out.println("split: bucket chain " + isplit);
+        out.println("split: bucket chain " + isplit);
 
         hTable.add(new Bucket());
         Bucket splitBucket = hTable.get(isplit);
         Bucket newBucket = new Bucket();
         splitBucket.next = newBucket;
-        
-        isplit++;
 
+        isplit++;
+        
         for (int i = 0; i < splitBucket.nKeys; i++) {
             K key = splitBucket.key[i];
             V value = splitBucket.value[i];
             int hash = h2(key);
-
+            
             if (hash != isplit) {
                 newBucket.add(key, value);
-
+                
                 splitBucket.key[i] = null;
                 splitBucket.value[i] = null;
                 splitBucket.nKeys--;
             }
         }
-
+        
         if (isplit == mod1) {
             isplit = 0;
             mod1 *= 2;
             mod2 = 2 * mod1;
         }
-
+        
     } // split
 
     /********************************************************************************
@@ -326,5 +326,4 @@ public class LinHashMap <K, V>
     } // main
 
 } // LinHashMap class
-
 

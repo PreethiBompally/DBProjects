@@ -69,7 +69,7 @@ public class Table
 
     /** The map type to be used for indices.  Change as needed.
      */
-    private static final MapType mType = MapType.TREE_MAP;
+    private static final MapType mType = MapType.LINHASH_MAP;
 
     /************************************************************************************
      * Make a map (index) given the MapType.
@@ -78,7 +78,7 @@ public class Table
     {
         return switch (mType) {
         case TREE_MAP    -> new TreeMap <> ();
-//        case LINHASH_MAP -> new LinHashMap <> (KeyType.class, Comparable [].class);
+        case LINHASH_MAP -> new LinHashMap <> (KeyType.class, Comparable [].class);
 //      case BPTREE_MAP  -> new BpTreeMap <> (KeyType.class, Comparable [].class);
         default          -> null;
         }; // switch
