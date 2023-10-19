@@ -488,7 +488,6 @@ public class Table
     	// Join the tables using the index
     	List <Comparable []> rows1 = new ArrayList <> ();
     	for (Comparable[] tup1 : tuples) {
-    		System.out.println("here"+tup1[col(t_attrs[0])]);
     		Comparable[] tup2 = index.get(new KeyType(tup1[col(t_attrs[0])]));
     		if (tup2 != null) rows1.add(concat(tup1,tup2));
     	}

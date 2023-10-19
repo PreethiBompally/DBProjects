@@ -148,7 +148,7 @@ class MovieDB
         t_join2.print ();
         
         out.println ();
-        var t_i_join = cinema.i_join ("studioName", "name", studio);
+        var t_i_join = movie.i_join ("studioName", "name", studio);
         t_i_join.print ();
         
     } // main
