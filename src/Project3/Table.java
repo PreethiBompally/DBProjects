@@ -10,7 +10,6 @@ import java.nio.file.Paths;
 import java.util.*;
 import java.util.function.*;
 import java.util.stream.*;
-
 import static java.lang.Boolean.*;
 import static java.lang.System.arraycopy;
 import static java.lang.System.out;
@@ -65,24 +64,24 @@ public class Table
 
     /** The supported map types.
      */
-    private enum MapType { NO_MAP, TREE_MAP, LINHASH_MAP, BPTREE_MAP }
+    private enum MapType { NO_MAP, TREE_MAP, HASH_MAP, LINHASH_MAP }
 
     /** The map type to be used for indices.  Change as needed.
      */
-    private static final MapType mType = MapType.LINHASH_MAP;
+    private static final MapType mType = MapType.NO_MAP;
 
     /************************************************************************************
      * Make a map (index) given the MapType.
      */
-    private static Map <KeyType, Comparable []> makeMap ()
-    {
-        return switch (mType) {
-        case TREE_MAP    -> new TreeMap <> ();
-        case LINHASH_MAP -> new LinHashMap <> (KeyType.class, Comparable [].class);
-//      case BPTREE_MAP  -> new BpTreeMap <> (KeyType.class, Comparable [].class);
-        default          -> null;
-        }; // switch
-    } // makeMap
+    
+    private static Map<KeyType, Comparable[]> makeMap() {
+		return switch (mType) {
+			case TREE_MAP -> new TreeMap<>();
+			case HASH_MAP -> new HashMap<>();
+			case LINHASH_MAP -> new LinHashMap<>(KeyType.class, Comparable[].class);
+			default -> null;
+		}; // switch
+	}
 
     /************************************************************************************
      * Concatenate two arrays of type T to form a new wider array.
@@ -277,11 +276,17 @@ public class Table
         List <Comparable []> rows = new ArrayList <> ();
 
         try 
-        {
-        	Comparable[] eachTuple = index.get(keyVal);
-        	if((eachTuple) != null)
-        	{
-        		rows.add(eachTuple);
+        {	
+        	if (mType == MapType.NO_MAP) {
+        		out.println("please select a map");
+        	}
+        	else {
+        		
+	        	Comparable[] eachTuple = index.get(keyVal);
+	        	if((eachTuple) != null)
+	        	{
+	        		rows.add(eachTuple);
+	        	}
         	}
         }
         catch(Exception e)
@@ -478,18 +483,23 @@ public class Table
     {
     	out.println ("RA> " + name + ".i_join (" + attributes1 + ", " + attributes2 + ", "
                 + table2.name + ")");
-
-    	var t_attrs = attributes1.split (" ");
-    	var u_attrs = attributes2.split (" ");
-    	// index on the join column of table2
-    	for (Comparable[] tup : table2.tuples) 
-    		index.put (new KeyType (tup[table2.col(u_attrs[0])]), tup);
-
-    	// Join the tables using the index
     	List <Comparable []> rows1 = new ArrayList <> ();
-    	for (Comparable[] tup1 : tuples) {
-    		Comparable[] tup2 = index.get(new KeyType(tup1[col(t_attrs[0])]));
-    		if (tup2 != null) rows1.add(concat(tup1,tup2));
+    	if (mType == MapType.NO_MAP) {
+    		out.println("please select a map");
+    	}
+    	else {
+	    	var t_attrs = attributes1.split (" ");
+	    	var u_attrs = attributes2.split (" ");
+	    	// index on the join column of table2
+	    	for (Comparable[] tup : table2.tuples) 
+	    		index.put (new KeyType (tup[table2.col(u_attrs[0])]), tup);
+	
+	    	// Join the tables using the index
+//	    	List <Comparable []> rows1 = new ArrayList <> ();
+	    	for (Comparable[] tup1 : tuples) {
+	    		Comparable[] tup2 = index.get(new KeyType(tup1[col(t_attrs[0])]));
+	    		if (tup2 != null) rows1.add(concat(tup1,tup2));
+	    	}
     	}
 
     	return new Table (name + count++, concat (attribute, table2.attribute),
@@ -575,6 +585,37 @@ public class Table
         return new Table(name + count++, concat (attribute, table2_attr),
                 concat (domain, table2.domain), key, rows);
     }// join
+    
+    /************************************************************************************
+	 * Select the tuples satisfying the given key predicate (key = value). Retrieve
+	 * using a linear scan.
+	 *
+	 * @param keyVal the given key value
+	 * @return a table with the tuple satisfying the key predicate
+	 */
+	public Table nonIndexSelect(KeyType keyVal) {
+		ArrayList<Integer> keyIndexes = new ArrayList<Integer>();
+		HashSet keyNames = new HashSet(Arrays.asList(key));
+		for (int i = 0; i < attribute.length; i++) {
+			if (keyNames.contains(attribute[i])) {
+				keyIndexes.add(i);
+			}
+		}
+		List<Comparable[]> rows = new ArrayList<>();
+		for (int i = 0; i < tuples.size(); i++) {
+			Comparable[] currentTuple = tuples.get(i);
+			List<Comparable> keyValues = new ArrayList<Comparable>();
+			for (int j = 0; j < keyIndexes.size(); j++) {
+				keyValues.add(currentTuple[keyIndexes.get(j)]);
+			}
+			KeyType keyToCompare = new KeyType(keyValues.toArray(new Comparable[0]));
+			if (keyToCompare.equals(keyVal)) {
+				rows.add(tuples.get(i));
+			}
+		}
+
+		return new Table(name + count++, attribute, domain, key, rows);
+	} // select
 
     /************************************************************************************
      * Return the column position for the given attribute name or -1 if not found.

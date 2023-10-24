@@ -255,10 +255,8 @@ public class FileList extends AbstractList <Comparable []> implements List <Comp
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-                
         
         Comparable [] tuple = unpack(record,index); 
-
         return tuple;
     } // get
 

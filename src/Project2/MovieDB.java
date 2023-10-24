@@ -150,7 +150,24 @@ class MovieDB
         out.println ();
         var t_i_join = movie.i_join ("studioName", "name", studio);
         t_i_join.print ();
-        
+
+        var f3 = new Comparable [] { "Rambo", 1978, 100, "action", "Universal", 32355 };
+        String[] domainArray = { "String", "Integer", "Integer", "String", "String", "Integer" };
+        Class[] domain = new Class[domainArray.length];
+        for (int i = 0; i < domainArray.length; i++) {
+            if (domainArray[i].equals("String")) {
+                domain[i] = String.class;
+            } else if (domainArray[i].equals("Integer")) {
+                domain[i] = Integer.class;
+            } 
+        }
+
+        FileList fileListInstance = new FileList("movie", 128, domain);
+        System.out.println(fileListInstance.add(f3));
+        Comparable [] result = fileListInstance.get(0);
+        for(Comparable x :result) {
+        	System.out.print(x+" ");
+        }
     } // main
 
 } // MovieDB class
