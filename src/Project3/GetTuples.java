@@ -107,17 +107,16 @@ public class GetTuples {
 //	        t_iselect.print ();
 
 //			non-indexed join
-			out.println ();
-			operation = "non-indexed-join for "+rowCounter[i]+" rows : ";
-			var t_nijoin = actor.join("film_id","film_id" , film_actor);
-	        t_nijoin.print();
-			
-			//indexed join
-//			non-indexed join
 //			out.println ();
 //			operation = "non-indexed-join for "+rowCounter[i]+" rows : ";
-//			var t_ijoin = actor.i_join("film_id","film_id" , film_actor);
-//	        t_ijoin.print();
+//			var t_nijoin = film.join("film_id","film_id" , film_actor);
+//	        t_nijoin.print();
+			
+//			indexed join
+			out.println ();
+			operation = "indexed-join for "+rowCounter[i]+" rows : ";
+			var t_ijoin = film.i_join("film_id","film_id" , film_actor);
+	        t_ijoin.print();
 			
 			end_time = System.nanoTime();
 			duration = (double) (end_time - start_time) / 1e6;

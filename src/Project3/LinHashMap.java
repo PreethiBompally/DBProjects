@@ -61,7 +61,11 @@ public class LinHashMap <K, V>
 
         V find (K k)
         {
-            for (var j = 0; j < nKeys; j++) if (key[j].equals (k)) return value[j];
+            for (var j = 0; j < nKeys; j++) {
+            	if (key[j] != null && key[j].equals(k)) {
+            		return value[j];
+            	}
+            }
             return null;
         } // find
 
@@ -295,7 +299,11 @@ public class LinHashMap <K, V>
      */
     private int h2 (Object key)
     {
-        return key.hashCode () % mod2;
+    	if (key == null) {
+            return 0; // Or any default value you want to assign for null keys
+        } else {
+            return key.hashCode() % mod2;
+        }
     } // h2
 
     /********************************************************************************
