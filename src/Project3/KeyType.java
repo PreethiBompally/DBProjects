@@ -51,8 +51,12 @@ public class KeyType
     public int compareTo (KeyType k)
     {
         for (var i = 0; i < key.length; i++) {
-            if (key [i].compareTo (k.key [i]) < 0) return -1;
-            if (key [i].compareTo (k.key [i]) > 0) return 1;
+        	String thisKey = key[i].toString();
+            String otherKey = k.key[i].toString();
+            int comparison = thisKey.compareTo(otherKey);
+            if (comparison != 0) {
+                return comparison;
+            }
         } // for
         return 0;
     } // compareTo

@@ -1,6 +1,7 @@
 package Project3;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -43,7 +44,7 @@ public class GetTuples {
 	 // addRelSchema
 	}
     public static void main(String args[]) throws IOException {
-    	int[] rowCounter = { 100, 250, 500, 750, 1000, 2500, 5000, 7500, 10000, 25000, 50000 };
+    	int[] rowCounter = { 100,250,500,750,1000,2500,5000,7500,10000,17000};
 
     	String file_path = Paths.get("").toAbsolutePath().toString()+"\\src\\Project3\\timestamp.txt";
 		File timestamp = new File(file_path);
@@ -56,7 +57,9 @@ public class GetTuples {
     	test.addRelSchema("film","film_id title description release_year language_id original_language_id rental_duration rental_rate length replacement_cost rating last_update special_features fulltxt","Integer String String Integer Integer Integer Integer Float Integer Float String String String String","film_id",new String[][] { {"language_id","language","language_id"},{"original_language_id","language","language_id"}});
     	test.addRelSchema("film_actor","actor_id film_id last_update","Integer Integer String","actor_id film_id",new String[][] { {"actor_id","actor","actor_id"},{"film_id","film","film_id"}});
     	test.addRelSchema("rental","rental_id rental_date inventory_id customer_id return_date staff_id last_update","Integer String Integer Integer String Integer String","rental_id",new String[][] { {"customer_id","customer","customer_id"},{"inventory_id","inventory","inventory_id"},{"staff_id","staff","staff_id"}});
-		for (int i = 0; i < rowCounter.length; i++) {
+    	test.addRelSchema("inventory","inventory_id film_id store_id last_update","Integer Integer Integer String","inventory_id",new String[][] { {"film_id","film","film_id"},{"store_id","store","store_id"}});
+    	
+    	for (int i = 0; i < rowCounter.length; i++) {
 			System.out.println("Running for tuple size: " + rowCounter[i]);
 			long start_time;
 			long end_time;
@@ -69,6 +72,7 @@ public class GetTuples {
 			Table film = new Table("film","film_id title description release_year language_id original_language_id rental_duration rental_rate length replacement_cost rating last_update special_features fulltxt","Integer String String Integer Integer Integer Integer Float Integer Float String String String String","film_id");
 			Table film_actor = new Table("film_actor","actor_id film_id last_update","Integer Integer String","actor_id film_id");
 			Table rental = new Table("rental","rental_id rental_date inventory_id customer_id return_date staff_id last_update","Integer String Integer Integer String Integer String","rental_id");
+			Table inventory = new Table("inventory","inventory_id film_id store_id last_update","Integer Integer String Integer","inventory_id");
 			
 			GetData data = new GetData();
 			List<Comparable[]> tups = data.getTuples("actor",rowCounter[i]);
@@ -76,49 +80,74 @@ public class GetTuples {
 				actor.insert(tup);
 			}
 			List<Comparable[]> tups1 = data.getTuples("customer",rowCounter[i]);
-			for(Comparable[] tup1:tups1){
-				customer.insert(tup1);
+			for(Comparable[] tup:tups1){
+				customer.insert(tup);
 			}
 			List<Comparable[]> tups2 = data.getTuples("film",rowCounter[i]);
-			for(Comparable[] tup2:tups2){
-				film.insert(tup2);
+			for(Comparable[] tup:tups2){
+				film.insert(tup);
 			}
 			List<Comparable[]> tups3 = data.getTuples("film_actor",rowCounter[i]);
-			for(Comparable[] tup3:tups3){
-				film_actor.insert(tup3);
+			for(Comparable[] tup:tups3){
+				film_actor.insert(tup);
 			}
 			List<Comparable[]> tups4 = data.getTuples("rental",rowCounter[i]);
-			for(Comparable[] tup4:tups4){
-				rental.insert(tup4);
+			for(Comparable[] tup:tups4){
+				rental.insert(tup);
 			}
+			List<Comparable[]> tups5 = data.getTuples("inventory",rowCounter[i]);
+			for(Comparable[] tup:tups5){
+				inventory.insert(tup);
+			}
+			
 			Random ran = new Random();
 			start_time = System.nanoTime();
-			
-//			 non-indexed select
-//			out.println ();
-//			operation = "non-indexed-select for "+rowCounter[i]+" rows for ";
-//	        var t_niselect = actor.nonIndexSelect(new KeyType(136));
-//	        t_niselect.print ();
-			
-			// indexed select
-//			out.println ();
-//			operation = "indexed-select for "+rowCounter[i]+" rows : ";
-//	        var t_iselect = actor.select(new KeyType(136));
-//	        t_iselect.print ();
 
 //			non-indexed join
-//			out.println ();
-//			operation = "non-indexed-join for "+rowCounter[i]+" rows : ";
-//			var t_nijoin = film.join("film_id","film_id" , film_actor);
-//	        t_nijoin.print();
+			out.println ();
+			operation = "non-indexed-join for "+rowCounter[i]+" rows : ";
+//			Table t_ijoin1 = film.join("film_id","film_id" , film_actor);//film,film_actor
+//			
+//			Table t_ijoin2 = film.i_join("film_id","film_id" , inventory); //film,rental
+//			Table t_ijoin3 = t_ijoin2.i_join("inventory_id", "inventory_id", rental);
+//			
+//			Table t_ijoin4 = film.join("film_id","film_id" , film_actor);//film,film_actor,actor
+//			Table t_ijoin5 = t_ijoin4.join("actor_id","actor_id",actor);
+			
+//			Table t_ijoin6 = film.join("film_id","film_id" , inventory); //film,rental,customer
+//			Table t_ijoin7 = t_ijoin6.join("inventory_id", "inventory_id", rental);
+//			Table t_ijoin8 = t_ijoin7.join("customer_id", "customer_id", customer);
+			
+
+			
+//			var t_ijoin9 = film.select("film_id == 141");// select
+//			t_ijoin9.print();
+			
+			var t_ijoin10 = film.select(new KeyType(141));
+			t_ijoin10.print();
+			
+			
 			
 //			indexed join
-			out.println ();
-			operation = "indexed-join for "+rowCounter[i]+" rows : ";
-			var t_ijoin = film.i_join("film_id","film_id" , film_actor);
-	        t_ijoin.print();
+//			operation = "indexed-join for "+rowCounter[i]+" rows : "; // film,film_actor
+//			Table t_ijoin9 = film.i_join("film_id","film_id" , film_actor);
+//			
+
+//			Table t_ijoin10 = film.i_join("film_id","film_id" , inventory); //film,rental
+//			Table t_ijoin11 = t_ijoin10.i_join("inventory_id", "inventory_id", rental);
 			
+			
+//			Table t_ijoin12 = film.i_join("film_id","film_id" , film_actor);//film,film_actor,actor
+//			Table t_ijoin13 = t_ijoin12.i_join("actor_id","actor_id",actor);
+			
+//			Table t_ijoin14 = film.i_join("film_id","film_id" , inventory); //film,rental,customer
+//			Table t_ijoin15 = t_ijoin14.i_join("inventory_id", "inventory_id", rental);
+//			Table t_ijoin16 = t_ijoin15.i_join("customer_id", "customer_id", customer);
+			
+			
+	        
 			end_time = System.nanoTime();
+			
 			duration = (double) (end_time - start_time) / 1e6;
 			
 			fw.write(operation);

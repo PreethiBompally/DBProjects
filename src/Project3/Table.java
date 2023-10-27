@@ -68,7 +68,7 @@ public class Table
 
     /** The map type to be used for indices.  Change as needed.
      */
-    private static final MapType mType = MapType.NO_MAP;
+    private static final MapType mType = MapType.TREE_MAP;
 
     /************************************************************************************
      * Make a map (index) given the MapType.
@@ -272,7 +272,7 @@ public class Table
     public Table select (KeyType keyVal)
     {
         out.println ("RA> " + name + ".select (" + keyVal + ")");
-
+        
         List <Comparable []> rows = new ArrayList <> ();
 
         try 
@@ -406,6 +406,11 @@ public class Table
      * @param table2     the rhs table in the join operation
      * @return  a table with tuples satisfying the condition
      */
+    
+    public List<Comparable[]> get_tuples() {
+    	return this.tuples;
+    }
+    
     public Table join (String condition, Table table2)
     {
         out.println ("RA> " + name + ".join (" + condition + ", " + table2.name + ")");
@@ -689,6 +694,7 @@ public class Table
         out.print ("|-");
         out.print ("---------------".repeat (attribute.length));
         out.println ("-|");
+        
     } // print
 
     /************************************************************************************
@@ -803,7 +809,7 @@ public class Table
      * @param column  the array of column names
      * @return  a smaller tuple extracted from tuple t 
      */
-    private Comparable [] extract (Comparable [] t, String [] column)
+    public Comparable [] extract (Comparable [] t, String [] column)
     {
         var tup    = new Comparable [column.length];
         var colPos = match (column);
